@@ -23,7 +23,6 @@ public enum PhotoLibraryError: Error, CustomStringConvertible {
     }
 }
 
-@MainActor
 public final class PhotoLibraryClient {
     public init() {}
 
