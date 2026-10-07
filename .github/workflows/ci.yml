@@ -6,10 +6,14 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Swift test
     runs-on: macos-15
+    timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -17,3 +21,10 @@ jobs:
 
       - name: Run tests
         run: swift test
+
+      - name: Build release and inspect privacy metadata without Photos access
+        run: |
+          swift build -c release
+          .build/release/screenshot-sweeper --help
+          otool -v -s __TEXT __info_plist .build/release/screenshot-sweeper | tail -n +3 > /tmp/sweeper-info.plist
+          /usr/libexec/PlistBuddy -c 'Print :NSPhotoLibraryUsageDescription' /tmp/sweeper-info.plist

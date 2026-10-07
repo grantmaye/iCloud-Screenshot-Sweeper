@@ -132,3 +132,8 @@ swift build -c release
 ## License
 
 MIT
+
+## Learn the implementation
+
+- [Technical manual: setup through maintenance](docs/technical-manual.md)
+- [Product story, limitations, and demo](docs/product-story.md)

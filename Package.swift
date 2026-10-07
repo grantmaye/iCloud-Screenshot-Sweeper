@@ -19,7 +19,13 @@ let package = Package(
         ),
         .executableTarget(
             name: "ScreenshotSweeper",
-            dependencies: ["ScreenshotSweeperCore"]
+            dependencies: ["ScreenshotSweeperCore"],
+            exclude: ["Info.plist"],
+            linkerSettings: [
+                .unsafeFlags(["-Xlinker", "-sectcreate", "-Xlinker", "__TEXT",
+                              "-Xlinker", "__info_plist", "-Xlinker",
+                              "Sources/ScreenshotSweeper/Info.plist"])
+            ]
         ),
         .testTarget(
             name: "ScreenshotSweeperTests",
