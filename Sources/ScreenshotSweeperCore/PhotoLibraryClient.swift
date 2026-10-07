@@ -65,7 +65,7 @@ public final class PhotoLibraryClient {
                     creationDate: asset.creationDate,
                     pixelWidth: asset.pixelWidth,
                     pixelHeight: asset.pixelHeight,
-                    filename: asset.value(forKey: "filename") as? String
+                    filename: PHAssetResource.assetResources(for: asset).first?.originalFilename
                 )
             )
 

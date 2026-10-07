@@ -24,6 +24,7 @@ struct RetentionPolicyTests {
         #expect(policy.isOlderThanRetention(older))
         #expect(policy.isOlderThanRetention(newer) == false)
         #expect(policy.isOlderThanRetention(nil) == false)
+        #expect(policy.isOlderThanRetention(policy.cutoffDate) == false)
     }
 }
 
@@ -47,5 +48,23 @@ struct CLITests {
         #expect(options.dryRun == false)
         #expect(options.assumeYes)
         #expect(options.limit == 25)
+    }
+}
+
+@Suite("CLI safety failures")
+struct CLISafetyTests {
+    @Test("invalid values never reach Photos", arguments: [
+        ["--retention"], ["--retention", "7"], ["--retention", "abc"],
+        ["--limit"], ["--limit", "0"], ["--limit", "-1"], ["--limit", "abc"],
+        ["--unknown"]
+    ])
+    func invalidArguments(arguments: [String]) {
+        #expect(throws: CLIError.self) { try CLI.parse(arguments) }
+    }
+
+    @Test("yes alone does not enable deletion")
+    func yesRemainsDryRun() throws {
+        #expect(try CLI.parse(["--yes"]).dryRun)
+        #expect(try CLI.parse(["-h"]).help)
     }
 }
